@@ -5,11 +5,9 @@ public class DynamicGridScaler : MonoBehaviour
 {
     public GridLayoutGroup gridLayoutGroup; 
     public int columns = 3; 
-    public int rows = 3; 
-
-    public float cardAspectRatio = 1f; 
+    public int rows = 3;    
+    public float maxCardSize = 100f; 
     public float paddingPercentage = 0.05f; 
-    public float minSpacingY = 10f;
 
     void Start()
     {
@@ -30,35 +28,35 @@ public class DynamicGridScaler : MonoBehaviour
         float availableWidth = screenWidth - paddingX;
         float availableHeight = screenHeight - paddingY;
 
-        // Calculating card size based on available space and number of rows/columns
-        float cardWidth = availableWidth / columns;
-        float cardHeight = availableHeight / rows;
+        // Calculating the ideal card size based on available space and number of rows/columns
+        float idealCardWidth = (availableWidth - (paddingX * 2)) / columns;
+        float idealCardHeight = (availableHeight - (paddingY * 2)) / rows;
 
-        // Adjust card height based on the aspect ratio
-        if (cardAspectRatio > 1)
-        {
-            cardHeight = cardWidth / cardAspectRatio; // For wider cards
-        }
-        else
-        {
-            cardWidth = cardHeight * cardAspectRatio; // For taller cards
-        }
+        // Start with the smaller dimension to ensure equal width and height, but limit to max size
+        float cardSize = Mathf.Min(Mathf.Min(idealCardWidth, idealCardHeight), maxCardSize);
 
-        gridLayoutGroup.cellSize = new Vector2(cardWidth, cardHeight);
+        // Calculatinf spacing based on the remaining space
+        float totalWidthWithSpacing = (cardSize * columns);
+        float totalHeightWithSpacing = (cardSize * rows);
 
-        // Adjust the spacing dynamically based on the card size
-        float spacingX = (availableWidth - (cardWidth * columns)) / (columns - 1);
-        float spacingY = (availableHeight - (cardHeight * rows)) / (rows - 1);
+        // Calculating the available spacing
+        float spacingX = (availableWidth - totalWidthWithSpacing) / (columns - 1);
+        float spacingY = (availableHeight - totalHeightWithSpacing) / (rows - 1);
 
-        // Ensure there is always a minimum vertical spacing between cards
-        if (spacingY < minSpacingY)
-        {
-            spacingY = minSpacingY; // Set a minimum vertical spacing if calculated value is too small
-        }
+        // Ensure spacingg is not negative
+        spacingX = Mathf.Max(spacingX, 0);
+        spacingY = Mathf.Max(spacingY, 0);
+
+        // Set the cell size to ensure square cards
+        gridLayoutGroup.cellSize = new Vector2(cardSize, cardSize);
 
         gridLayoutGroup.spacing = new Vector2(spacingX, spacingY);
 
-        Debug.Log($"Card Width: {cardWidth}, Card Height: {cardHeight}");
-        Debug.Log($"Spacing X: {spacingX}, Spacing Y: {spacingY}");
+        LayoutRebuilder.ForceRebuildLayoutImmediate(gridRectTransform);
+
+        Debug.Log($"Desired Columns: {columns}, Rows: {rows}");
+        Debug.Log($"Available Width: {availableWidth}, Height: {availableHeight}");
+        Debug.Log($"Card Size: {cardSize}");
+        Debug.Log($"Calculated Spacing X: {spacingX}, Spacing Y: {spacingY}");
     }
 }
