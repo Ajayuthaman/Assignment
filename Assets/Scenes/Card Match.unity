@@ -427,9 +427,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridLayoutGroup: {fileID: 1942995809}
-  columns: 5
-  rows: 5
-  maxCardSize: 100
+  columns: 2
+  rows: 4
+  maxCardSize: 170
+  desiredSpacing: 10
   paddingPercentage: 0.05
 --- !u!114 &1942995809
 MonoBehaviour:
@@ -486,8 +487,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardPrefab: {fileID: 4454424534380604286, guid: bfdb110f593e92c4781c5583c7a8cae6, type: 3}
   gridParent: {fileID: 1942995807}
-  columns: 5
-  rows: 5
+  columns: 2
+  rows: 4
 --- !u!4 &2096979132
 Transform:
   m_ObjectHideFlags: 0
