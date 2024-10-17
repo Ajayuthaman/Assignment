@@ -4,18 +4,18 @@ using System.Collections.Generic;
 
 public class CardLayoutManager : MonoBehaviour
 {
-    public GameObject cardPrefab; 
+    public GameObject cardPrefab;
     public Transform gridParent;
 
-    public int columns = 3; 
+    public int columns = 3;
     public int rows = 3;
 
     public Sprite[] availableSprites;
 
-    private List<Sprite> selectedSprites; 
+    private List<Sprite> selectedSprites;
     private List<Sprite> randomizedSprites; 
 
-    // Start is called before the first frame update
+
     void Start()
     {
         GenerateCards();
@@ -33,14 +33,14 @@ public class CardLayoutManager : MonoBehaviour
             return;
         }
 
-        // Step 1: Selecting half the total number of sprites for pairs
+        // Step 1: Select half the total number of sprites for pairs
         selectedSprites = new List<Sprite>();
 
         for (int i = 0; i < totalCards / 2; i++)
         {
             if (i < availableSprites.Length)
             {
-                selectedSprites.Add(availableSprites[i]); // Add each sprite once
+                selectedSprites.Add(availableSprites[i]);
             }
         }
 
@@ -48,7 +48,7 @@ public class CardLayoutManager : MonoBehaviour
         randomizedSprites = new List<Sprite>(selectedSprites);
         randomizedSprites.AddRange(selectedSprites); // Add a second set of the same sprites
 
-        // Step 3: Shuffle the sprites to randomize card placement
+        
         Shuffle(randomizedSprites);
 
         // Step 4: Instantiate cards and assign the randomized sprites
@@ -56,10 +56,8 @@ public class CardLayoutManager : MonoBehaviour
         {
             for (int j = 0; j < columns; j++)
             {
-                // Instantiate a card at the appropriate position
                 GameObject card = Instantiate(cardPrefab, gridParent);
 
-                // Get the CardController component
                 CardController cardController = card.GetComponent<CardController>();
 
                 // Assign the front image sprite from the shuffled list

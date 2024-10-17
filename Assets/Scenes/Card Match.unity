@@ -158,7 +158,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0.38888884, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -286,6 +286,7 @@ GameObject:
   - component: {fileID: 909205089}
   - component: {fileID: 909205088}
   - component: {fileID: 909205087}
+  - component: {fileID: 909205091}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -376,6 +377,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!225 &909205091
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 909205086}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1114061247
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,7 +419,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flippedCards: []
-  flipBackDelay: 1
+  flipBackDelay: 0.5
+  shrinkDuration: 0.5
+  isProcessing: 0
+  canvasGroup: {fileID: 909205091}
+  clickCount: 0
 --- !u!4 &1114061249
 Transform:
   m_ObjectHideFlags: 0

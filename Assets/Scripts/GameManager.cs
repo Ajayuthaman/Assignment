@@ -4,35 +4,53 @@ using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
-    public List<CardController> flippedCards = new List<CardController>(); 
+    public List<CardController> flippedCards = new List<CardController>();
     public float flipBackDelay = 1f; 
+    public float shrinkDuration = 0.5f;
+    public bool isProcessing = false;
+    public CanvasGroup canvasGroup;
+    public int clickCount = 0;
 
-    
     public void OnCardFlipped(CardController flippedCard)
     {
+        if (isProcessing) return; 
+
         // Add the flipped card to the list
         flippedCards.Add(flippedCard);
 
-        // comparing cards
+        // If two cards are flipped, comparing them
         if (flippedCards.Count == 2)
         {
             CompareCards();
         }
     }
 
+    public void CheckClickable()
+    {
+        clickCount++;
+        if (clickCount > 1)
+        {
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false; 
+        }
+    }
+
+    // Compare two flipped cards
     private void CompareCards()
     {
+        isProcessing = true; 
+
         CardController card1 = flippedCards[0];
         CardController card2 = flippedCards[1];
 
-        // Check if the cards match by the sprite
+        // Check if the cards sprites are same
         if (card1.frontImage.sprite == card2.frontImage.sprite)
         {
-            // Cards match, keep them flipped
+            // Cards match
             card1.isMatched = true;
             card2.isMatched = true;
 
-            // Animate shrinking the cards to 0 when matched
+            // Shrink  size zero
             card1.ShrinkOnMatch();
             card2.ShrinkOnMatch();
 
@@ -41,15 +59,21 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            // Cards don't match, flip them back after a short delay
+            // Cards don't match, fliping back after a short delay
             DOVirtual.DelayedCall(flipBackDelay, () =>
             {
-                card1.FlipCardBack();                                                                                                                                                                                   
+                card1.FlipCardBack();
                 card2.FlipCardBack();
 
                 // Clear the flipped cards list for the next pair
                 flippedCards.Clear();
             });
         }
+
+        // Unlock processing and enable interaction again
+        isProcessing = false;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+        clickCount = 0;
     }
 }

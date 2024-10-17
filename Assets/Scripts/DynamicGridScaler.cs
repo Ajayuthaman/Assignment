@@ -4,10 +4,10 @@ using UnityEngine.UI;
 public class DynamicGridScaler : MonoBehaviour
 {
     public GridLayoutGroup gridLayoutGroup;
-    public int columns = 3;
-    public int rows = 3;
+    public int columns = 2;
+    public int rows = 2;
     public float maxCardSize = 100f;
-    public float desiredSpacing = 10f; 
+    public float desiredSpacing = 10f;
     public float paddingPercentage = 0.05f;
 
     void Start()
@@ -21,7 +21,7 @@ public class DynamicGridScaler : MonoBehaviour
         float screenWidth = gridRectTransform.rect.width;
         float screenHeight = gridRectTransform.rect.height;
 
-        // Calculatinf padding based on the screen size
+        // Calculatif padding based on the screen size
         float paddingX = screenWidth * paddingPercentage;
         float paddingY = screenHeight * paddingPercentage;
 
@@ -33,7 +33,7 @@ public class DynamicGridScaler : MonoBehaviour
         float cardWidth = (availableWidth - (desiredSpacing * (columns - 1))) / columns;
         float cardHeight = (availableHeight - (desiredSpacing * (rows - 1))) / rows;
 
-        // Use the smaller dimension to ensure equal width and height, but also limit to max size
+        // Using the smaller dimension to ensure equal width and height, but also limit to max size
         float cardSize = Mathf.Min(Mathf.Min(cardWidth, cardHeight), maxCardSize);
 
         // Set the cell size to ensure square cards
@@ -43,16 +43,18 @@ public class DynamicGridScaler : MonoBehaviour
         float spacingX = columns > 1 ? (availableWidth - (cardSize * columns)) / (columns - 1) : 0;
         float spacingY = rows > 1 ? (availableHeight - (cardSize * rows)) / (rows - 1) : 0;
 
-        // Limit the minimum spacing to a reasonable value, ensuring it does not exceed desiredSpacin
+        // Limit the minimum spacing to a reasonable value, ensuring it does not exceed desiredSpacing
         spacingX = Mathf.Max(spacingX, desiredSpacing);
-        spacingY = Mathf.Max(spacingY, desiredSpacing * 1.5f); // Increase vertical spacing to give more space
+        spacingY = Mathf.Max(spacingY, desiredSpacing * 1.5f);
 
         // Prevent spacing from becoming excessively large
         if (spacingX > (availableWidth / columns) - cardSize) spacingX = (availableWidth / columns) - cardSize;
         if (spacingY > (availableHeight / rows) - cardSize) spacingY = (availableHeight / rows) - cardSize;
 
+        // Set the calculated spacing
         gridLayoutGroup.spacing = new Vector2(spacingX, spacingY);
 
+        // Force the layout to update
         LayoutRebuilder.ForceRebuildLayoutImmediate(gridRectTransform);
 
         Debug.Log($"Desired Columns: {columns}, Rows: {rows}");
