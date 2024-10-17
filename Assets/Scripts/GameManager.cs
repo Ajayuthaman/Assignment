@@ -4,14 +4,23 @@ using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
-    public List<CardController> flippedCards = new List<CardController>();
+    [HideInInspector] public List<CardController> flippedCards = new List<CardController>();
     public float flipBackDelay = 1f;
     public float shrinkDuration = 0.5f;
-    public bool isProcessing = false;
+    [HideInInspector] public bool isProcessing = false;
     public CanvasGroup canvasGroup;
-    public int clickCount = 0;
+    public Transform gridParent;
+    [HideInInspector] public int clickCount = 0;
 
     public LevelManager levelManager;
+    public GameObject menuPanel;
+    public GameObject gamePanel;
+
+    private void Start()
+    {
+        menuPanel.SetActive(true);
+        gamePanel.SetActive(false);
+    }
 
     public void OnCardFlipped(CardController flippedCard)
     {
@@ -102,4 +111,39 @@ public class GameManager : MonoBehaviour
     {
         levelManager.LoadNextLevel();
     }
+
+
+    //Menu button functions
+    public void PlayBtn()
+    {
+        levelManager.RestartGame();
+        gamePanel.SetActive(true);
+        menuPanel.SetActive(false);
+    }
+
+    public void LoadBtn()
+    {
+        levelManager.LoadCurrentLevel();
+        gamePanel.SetActive(true);
+        menuPanel.SetActive(false);
+    }
+
+    public void QuitBtn()
+    {
+        Application.Quit();
+    }
+
+    //Game panel
+
+    public void HomeBtn()
+    {
+        // Clear any existing cards in the grid
+        foreach (Transform child in gridParent)
+        {
+            Destroy(child.gameObject);
+        }
+        gamePanel.SetActive(false);
+        menuPanel.SetActive(true);
+    }
+
 }

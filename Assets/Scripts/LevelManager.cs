@@ -10,10 +10,10 @@ public class LevelManager : MonoBehaviour
 
     private const string CurrentLevelKey = "CurrentLevelIndex"; // Key for saving the level index
 
-    private void Start()
+/*    private void Start()
     {
         LoadCurrentLevel();
-    }
+    }*/
 
     // Method to load the current level based on saved index
     public void LoadCurrentLevel()
