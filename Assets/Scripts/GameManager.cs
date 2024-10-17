@@ -24,9 +24,12 @@ public class GameManager : MonoBehaviour
     // Level text for tracking matched cards and attempts
     public TMP_Text matchedCardNo;
     public TMP_Text totalAttemptsNo;
+    public TMP_Text scoreTxt;
 
     private int totalAttempts;
     private int matchedCardsCount = 0;
+    private int scoreNo = 0;
+    private int combo = 0;
 
     //next level panel buttons
     public GameObject nextLevelPanel;
@@ -101,7 +104,12 @@ public class GameManager : MonoBehaviour
             //play correct sound
             AudioManager.instance.PlayCorrectSound();
 
+            combo++;
             matchedCardsCount += 1;
+
+            scoreNo += (combo > 2) ? 10 : 5;
+
+
             UpdateUI();  
 
             // Clear the flipped cards list for the next pair
@@ -115,6 +123,7 @@ public class GameManager : MonoBehaviour
                 //LoadNextLevel();
                 isWin = true;
                 Invoke(nameof(AnimateButtons), 3f);
+                combo = 0;
             }
         }
         else
@@ -131,6 +140,7 @@ public class GameManager : MonoBehaviour
                 flippedCards.Clear();
 
                 totalAttempts--;
+                combo = 0;
                 UpdateUI(); 
 
                 if(totalAttempts == 0)
@@ -159,6 +169,7 @@ public class GameManager : MonoBehaviour
     {
         matchedCardNo.text = matchedCardsCount.ToString();
         totalAttemptsNo.text = totalAttempts.ToString();
+        scoreTxt.text = scoreNo.ToString();
     }
 
     // Check if all cards in the game are matched
@@ -223,6 +234,8 @@ public class GameManager : MonoBehaviour
     {
         totalAttempts = 0;
         matchedCardsCount = 0;
+        scoreNo = 0;
+        UpdateUI();
 
         levelManager.LoadCurrentLevel();
         gamePanel.SetActive(true);
