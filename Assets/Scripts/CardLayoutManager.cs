@@ -25,6 +25,13 @@ public class CardLayoutManager : MonoBehaviour
             return;
         }
 
+        // Check if there are enough unique sprites to create matching pairs
+        if (availableSprites.Length < totalCards / 2)
+        {
+            Debug.LogError($"Not enough sprites available! Need at least {totalCards / 2} sprites, but only {availableSprites.Length} provided.");
+            return;
+        }
+
         // Clear any existing cards in the grid
         foreach (Transform child in gridParent)
         {

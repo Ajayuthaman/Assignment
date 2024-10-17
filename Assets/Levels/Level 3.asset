@@ -12,13 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 466b9b897bd674c4cbdbd0bb9312a6c8, type: 3}
   m_Name: Level 3
   m_EditorClassIdentifier: 
-  rows: 2
-  columns: 3
+  rows: 4
+  columns: 4
+  totalAttempt: 12
   levelImages:
-  - {fileID: 21300000, guid: 6fd3703a8addbf34c80e841e0b1f2b93, type: 3}
-  - {fileID: 21300000, guid: 0800ddd3452a38d478d06895b49bb1bf, type: 3}
-  - {fileID: 21300000, guid: ff34f55008b06864cb3bb0119b49bd79, type: 3}
+  - {fileID: 21300000, guid: dd9aefe0eb1bf864887b5f3d68da1674, type: 3}
+  - {fileID: 21300000, guid: e407dd1e136540c4c8bc026d73aa0c44, type: 3}
   - {fileID: 21300000, guid: 16349d82b77601b4486ca44ea890e2fe, type: 3}
-  - {fileID: 21300000, guid: df89bea3198c335469669d8419032536, type: 3}
+  - {fileID: 21300000, guid: ff34f55008b06864cb3bb0119b49bd79, type: 3}
+  - {fileID: 21300000, guid: 9a8c27ecc4d75e8469d43715b72775d8, type: 3}
   - {fileID: 21300000, guid: 51cb5daad07c136499488c43c640058e, type: 3}
+  - {fileID: 21300000, guid: 6fd3703a8addbf34c80e841e0b1f2b93, type: 3}
+  - {fileID: 21300000, guid: df89bea3198c335469669d8419032536, type: 3}
+  - {fileID: 21300000, guid: 8d6277ce03d81114d9286df9bee71c2f, type: 3}
+  - {fileID: 21300000, guid: 0800ddd3452a38d478d06895b49bb1bf, type: 3}
   levelNumber: 3

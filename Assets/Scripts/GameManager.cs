@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,10 +18,41 @@ public class GameManager : MonoBehaviour
     public GameObject menuPanel;
     public GameObject gamePanel;
 
+    //win particle
+    public ParticleSystem winParticle;
+
+    // Level text for tracking matched cards and attempts
+    public TMP_Text matchedCardNo;
+    public TMP_Text totalAttemptsNo;
+
+    private int totalAttempts;
+    private int matchedCardsCount = 0;
+
+    //next level panel buttons
+    public GameObject nextLevelPanel;
+    public RectTransform[] buttons; 
+    public float dropPositionY = 0f; 
+    public float dropDuration = 1f; 
+    public float bounceHeight = 100f; 
+    public float bounceDuration = 0.5f; 
+    private Vector3[] initialPositions;
+
+    private bool isWin;
+
     private void Start()
     {
         menuPanel.SetActive(true);
         gamePanel.SetActive(false);
+        nextLevelPanel.SetActive(false);
+
+        matchedCardsCount = 0;
+
+        // Store the initial positions of the buttons
+        initialPositions = new Vector3[buttons.Length];
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            initialPositions[i] = buttons[i].localPosition;
+        }
     }
 
     public void OnCardFlipped(CardController flippedCard)
@@ -68,6 +101,9 @@ public class GameManager : MonoBehaviour
             //play correct sound
             AudioManager.instance.PlayCorrectSound();
 
+            matchedCardsCount += 1;
+            UpdateUI();  
+
             // Clear the flipped cards list for the next pair
             flippedCards.Clear();
 
@@ -75,7 +111,10 @@ public class GameManager : MonoBehaviour
             if (AreAllCardsMatched())
             {
                 AudioManager.instance.PlayWinSound();
-                LoadNextLevel();
+                winParticle.Play();
+                //LoadNextLevel();
+                isWin = true;
+                Invoke(nameof(AnimateButtons), 3f);
             }
         }
         else
@@ -87,9 +126,18 @@ public class GameManager : MonoBehaviour
                 card2.FlipCardBack();
 
                 AudioManager.instance.PlayWrongSound();
-
+                isWin = false;
                 // Clear the flipped cards list for the next pair
                 flippedCards.Clear();
+
+                totalAttempts--;
+                UpdateUI(); 
+
+                if(totalAttempts == 0)
+                {
+                    AudioManager.instance.PlayFailSound();
+                    AnimateButtons();
+                }
             });
         }
 
@@ -98,6 +146,19 @@ public class GameManager : MonoBehaviour
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
         clickCount = 0;
+    }
+
+    public void UpdateGameScore(int _totalAttempts)
+    {
+        totalAttempts = _totalAttempts;
+        matchedCardsCount = 0;
+        UpdateUI();
+    }
+
+    private void UpdateUI()
+    {
+        matchedCardNo.text = matchedCardsCount.ToString();
+        totalAttemptsNo.text = totalAttempts.ToString();
     }
 
     // Check if all cards in the game are matched
@@ -115,13 +176,17 @@ public class GameManager : MonoBehaviour
     // Load the next level using LevelManager
     private void LoadNextLevel()
     {
+        totalAttempts = 0;
+        matchedCardsCount = 0;
         levelManager.LoadNextLevel();
     }
 
-
-    //Menu button functions
+    // Menu button functions
     public void PlayBtn()
     {
+        totalAttempts = 0;
+        matchedCardsCount = 0;
+
         levelManager.RestartGame();
         gamePanel.SetActive(true);
         menuPanel.SetActive(false);
@@ -131,9 +196,38 @@ public class GameManager : MonoBehaviour
 
     public void LoadBtn()
     {
+        totalAttempts = 0;
+        matchedCardsCount = 0;
+
         levelManager.LoadCurrentLevel();
         gamePanel.SetActive(true);
         menuPanel.SetActive(false);
+        nextLevelPanel.SetActive(false);
+
+        AudioManager.instance.PlayBackgroundMusic();
+    }
+
+    public void NextBtn()
+    {
+        totalAttempts = 0;
+        matchedCardsCount = 0;
+
+        levelManager.LoadNextLevel();
+        gamePanel.SetActive(true);
+        menuPanel.SetActive(false);
+        nextLevelPanel.SetActive(false);
+
+    }
+
+    public void RetryBtn()
+    {
+        totalAttempts = 0;
+        matchedCardsCount = 0;
+
+        levelManager.LoadCurrentLevel();
+        gamePanel.SetActive(true);
+        menuPanel.SetActive(false);
+        nextLevelPanel.SetActive(false);
 
         AudioManager.instance.PlayBackgroundMusic();
     }
@@ -143,7 +237,7 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
-    //Game panel
+    // Game panel
 
     public void HomeBtn()
     {
@@ -153,8 +247,51 @@ public class GameManager : MonoBehaviour
             Destroy(child.gameObject);
         }
         gamePanel.SetActive(false);
+        nextLevelPanel.SetActive(false);
         menuPanel.SetActive(true);
         AudioManager.instance.StopAllSound();
     }
 
+    //next level panel buttons
+    void AnimateButtons()
+    {
+        ResetButtons();
+        nextLevelPanel.SetActive(true);
+
+        buttons[1].gameObject.SetActive(isWin);
+
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            RectTransform button = buttons[i];
+            float delay = i * 0.2f; // Adding a small delay between each button's animation
+
+            // Move the button down to the bounce point
+            button.DOLocalMoveY(dropPositionY, dropDuration)
+                .SetEase(Ease.Linear)
+                .SetDelay(delay)
+                .OnComplete(() => {
+                    // Bounce effect
+                    button.DOLocalMoveY(dropPositionY - bounceHeight, bounceDuration)
+                          .SetEase(Ease.OutQuad)
+                          .SetLoops(2, LoopType.Yoyo);
+                });
+        }
+    }
+
+    void ResetButtons()
+    {
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            buttons[i].localPosition = initialPositions[i];
+        }
+    }
+
+    public IEnumerator AllLevelComplet()
+    {
+        winParticle.Play();
+        yield return new WaitForSeconds(3f);
+        gamePanel.SetActive(false);
+        nextLevelPanel.SetActive(false);
+        menuPanel.SetActive(true);
+    }
 }

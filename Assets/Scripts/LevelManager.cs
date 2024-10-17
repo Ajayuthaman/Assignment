@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour
 
     public CardLayoutManager cardLayoutManager;
     public DynamicGridScaler gridScaler;
+    public GameManager gameManager;
 
     private const string CurrentLevelKey = "CurrentLevelIndex"; // Key for saving the level index
 
@@ -35,6 +36,7 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
+            StartCoroutine(gameManager.AllLevelComplet());
             Debug.Log("All levels completed!");
         }
     }
@@ -52,7 +54,7 @@ public class LevelManager : MonoBehaviour
     {
         PlayerPrefs.SetInt(CurrentLevelKey, currentLevelIndex);
         PlayerPrefs.Save(); 
-        Debug.Log($"Current Level Saved: {currentLevelIndex}");
+        //Debug.Log($"Current Level Saved: {currentLevelIndex}");
     }
 
     // Method to start a new level (given a specific level index)
@@ -77,9 +79,10 @@ public class LevelManager : MonoBehaviour
         {
             currentLevelIndex = levelIndex;
             LevelData levelData = levels[currentLevelIndex];
+            gameManager.UpdateGameScore(levelData.totalAttempt);
             gridScaler.AdjustGridLayout(levelData.columns, levelData.rows);
             cardLayoutManager.SetUpLevel(levelData);
-            Debug.Log($"Loaded Level {levelData.levelNumber}");
+            //Debug.Log($"Loaded Level {levelData.levelNumber}");
         }
         else
         {

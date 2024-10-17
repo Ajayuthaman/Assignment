@@ -9,9 +9,12 @@ public class AudioManager : MonoBehaviour
     public AudioClip correctSound;
     public AudioClip winSound;
     public AudioClip flipSound;
+    public AudioClip failSound;
 
     public AudioSource musicSource;
     public AudioSource soundEffectSource;
+
+    private bool isMuted = false;  // Flag to check if the audio is muted
 
     private void Awake()
     {
@@ -20,9 +23,9 @@ public class AudioManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
 
-/*            // Initialize audio sources
-            musicSource = gameObject.AddComponent<AudioSource>();
-            soundEffectSource = gameObject.AddComponent<AudioSource>();*/
+            /*            // Initialize audio sources
+                        musicSource = gameObject.AddComponent<AudioSource>();
+                        soundEffectSource = gameObject.AddComponent<AudioSource>();*/
         }
         else
         {
@@ -32,34 +35,74 @@ public class AudioManager : MonoBehaviour
 
     public void PlayBackgroundMusic()
     {
-        musicSource.clip = backgroundMusic;
-        musicSource.loop = true;
-        musicSource.Play();
+        if (!isMuted)
+        {
+            musicSource.clip = backgroundMusic;
+            musicSource.loop = true;
+            musicSource.Play();
+        }
     }
 
     public void PlayWrongSound()
     {
-        soundEffectSource.PlayOneShot(wrongSound);
+        if (!isMuted)
+        {
+            soundEffectSource.PlayOneShot(wrongSound);
+        }
     }
 
     public void PlayCorrectSound()
     {
-        soundEffectSource.PlayOneShot(correctSound);
+        if (!isMuted)
+        {
+            soundEffectSource.PlayOneShot(correctSound);
+        }
     }
 
     public void PlayWinSound()
     {
-        soundEffectSource.PlayOneShot(winSound);
+        if (!isMuted)
+        {
+            soundEffectSource.PlayOneShot(winSound);
+        }
     }
 
     public void PlayFlipSound()
     {
-        soundEffectSource.PlayOneShot(flipSound);
+        if (!isMuted)
+        {
+            soundEffectSource.PlayOneShot(flipSound);
+        }
+    }
+
+    public void PlayFailSound()
+    {
+        if (!isMuted)
+        {
+            soundEffectSource.PlayOneShot(failSound);
+        }
     }
 
     public void StopAllSound()
     {
         soundEffectSource.Stop();
         musicSource.Stop();
+    }
+
+    // Method to toggle mute/unmute
+    public void ToggleMute()
+    {
+        isMuted = !isMuted; 
+
+        if (isMuted)
+        {
+            musicSource.mute = true;
+            soundEffectSource.mute = true;
+        }
+        else
+        {
+            musicSource.mute = false;
+            soundEffectSource.mute = false;
+        }
     }
 }
