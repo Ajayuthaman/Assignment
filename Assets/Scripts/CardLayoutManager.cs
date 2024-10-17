@@ -31,9 +31,23 @@ public class CardLayoutManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        // Step 1: Duplicate the available sprites from LevelData to create pairs
-        randomizedSprites = new List<Sprite>(availableSprites);
-        randomizedSprites.AddRange(availableSprites); // Create pairs by duplicating the sprites
+        // Step 1: Select random sprites from available sprites
+        randomizedSprites = new List<Sprite>();
+        HashSet<int> selectedIndices = new HashSet<int>(); // To avoid duplicate selections
+
+        // Select unique indices for random sprites
+        while (selectedIndices.Count < totalCards / 2) // Only need half for pairs
+        {
+            int randomIndex = Random.Range(0, availableSprites.Length);
+            selectedIndices.Add(randomIndex);
+        }
+
+        // Duplicate selected sprites to create pairs
+        foreach (int index in selectedIndices)
+        {
+            randomizedSprites.Add(availableSprites[index]); // Add the selected sprite
+            randomizedSprites.Add(availableSprites[index]); // Add the duplicate for matching
+        }
 
         // Step 2: Shuffle the randomized sprite list
         Shuffle(randomizedSprites);

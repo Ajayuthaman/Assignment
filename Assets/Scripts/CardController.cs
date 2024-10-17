@@ -47,6 +47,8 @@ public class CardController : MonoBehaviour
 
         gameManager.CheckClickable(); // Check and manage clicks
 
+        AudioManager.instance.PlayFlipSound();
+
         // Animate the rotation along the Y-axis to flip
         transform.DORotate(new Vector3(0f, 90f, 0f), flipDuration / 2).OnComplete(() =>
         {

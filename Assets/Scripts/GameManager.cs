@@ -65,12 +65,16 @@ public class GameManager : MonoBehaviour
             card1.ShrinkOnMatch();
             card2.ShrinkOnMatch();
 
+            //play correct sound
+            AudioManager.instance.PlayCorrectSound();
+
             // Clear the flipped cards list for the next pair
             flippedCards.Clear();
 
             // Check if all cards are matched
             if (AreAllCardsMatched())
             {
+                AudioManager.instance.PlayWinSound();
                 LoadNextLevel();
             }
         }
@@ -81,6 +85,8 @@ public class GameManager : MonoBehaviour
             {
                 card1.FlipCardBack();
                 card2.FlipCardBack();
+
+                AudioManager.instance.PlayWrongSound();
 
                 // Clear the flipped cards list for the next pair
                 flippedCards.Clear();
@@ -119,6 +125,8 @@ public class GameManager : MonoBehaviour
         levelManager.RestartGame();
         gamePanel.SetActive(true);
         menuPanel.SetActive(false);
+
+        AudioManager.instance.PlayBackgroundMusic();
     }
 
     public void LoadBtn()
@@ -126,6 +134,8 @@ public class GameManager : MonoBehaviour
         levelManager.LoadCurrentLevel();
         gamePanel.SetActive(true);
         menuPanel.SetActive(false);
+
+        AudioManager.instance.PlayBackgroundMusic();
     }
 
     public void QuitBtn()
@@ -144,6 +154,7 @@ public class GameManager : MonoBehaviour
         }
         gamePanel.SetActive(false);
         menuPanel.SetActive(true);
+        AudioManager.instance.StopAllSound();
     }
 
 }

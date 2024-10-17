@@ -17,4 +17,6 @@ MonoBehaviour:
   levelImages:
   - {fileID: 21300000, guid: dd9aefe0eb1bf864887b5f3d68da1674, type: 3}
   - {fileID: 21300000, guid: e407dd1e136540c4c8bc026d73aa0c44, type: 3}
+  - {fileID: 21300000, guid: 6fd3703a8addbf34c80e841e0b1f2b93, type: 3}
+  - {fileID: 21300000, guid: df89bea3198c335469669d8419032536, type: 3}
   levelNumber: 1
