@@ -5,11 +5,11 @@ Welcome to the **Unity Assignment**, a fun and interactive card-matching memory 
 ---
 
 ## 📖 Table of Contents
-- [About the Game](#about-the-game)
-- [Features](#features)
-- [Gameplay](#gameplay)
-- [How to Play](#how-to-play)
-- [Future Enhancements](#future-enhancements)
+- [About the Game](#-about-the-game)
+- [Features](#-features)
+- [Gameplay](#-gameplay)
+- [How to Play](#-how-to-play)
+- [Future Enhancements](#-future-enhancements)
 
 ---
 
