@@ -399,6 +399,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1114061249}
   - component: {fileID: 1114061248}
+  - component: {fileID: 1114061250}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -424,6 +425,7 @@ MonoBehaviour:
   isProcessing: 0
   canvasGroup: {fileID: 909205091}
   clickCount: 0
+  levelManager: {fileID: 1114061250}
 --- !u!4 &1114061249
 Transform:
   m_ObjectHideFlags: 0
@@ -439,6 +441,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1114061250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114061247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df268e7b787d317438661753f30d5bb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levels:
+  - {fileID: 11400000, guid: 1efae196d4e80b34d9bbf793b3bda82e, type: 2}
+  - {fileID: 11400000, guid: 5dd6260350f79c74e98478cca83de402, type: 2}
+  - {fileID: 11400000, guid: d5e82cf27c9d5ab468a5199fafe2a417, type: 2}
+  cardLayoutManager: {fileID: 2096979131}
+  gridScaler: {fileID: 1942995808}
 --- !u!1 &1942995806
 GameObject:
   m_ObjectHideFlags: 0
@@ -550,19 +570,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardPrefab: {fileID: 4454424534380604286, guid: bfdb110f593e92c4781c5583c7a8cae6, type: 3}
   gridParent: {fileID: 1942995807}
-  columns: 4
-  rows: 4
-  availableSprites:
-  - {fileID: 21300000, guid: dd9aefe0eb1bf864887b5f3d68da1674, type: 3}
-  - {fileID: 21300000, guid: e407dd1e136540c4c8bc026d73aa0c44, type: 3}
-  - {fileID: 21300000, guid: 16349d82b77601b4486ca44ea890e2fe, type: 3}
-  - {fileID: 21300000, guid: ff34f55008b06864cb3bb0119b49bd79, type: 3}
-  - {fileID: 21300000, guid: 9a8c27ecc4d75e8469d43715b72775d8, type: 3}
-  - {fileID: 21300000, guid: 51cb5daad07c136499488c43c640058e, type: 3}
-  - {fileID: 21300000, guid: 6fd3703a8addbf34c80e841e0b1f2b93, type: 3}
-  - {fileID: 21300000, guid: df89bea3198c335469669d8419032536, type: 3}
-  - {fileID: 21300000, guid: 8d6277ce03d81114d9286df9bee71c2f, type: 3}
-  - {fileID: 21300000, guid: 0800ddd3452a38d478d06895b49bb1bf, type: 3}
 --- !u!4 &2096979132
 Transform:
   m_ObjectHideFlags: 0

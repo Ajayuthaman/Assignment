@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections.Generic;
 
 public class CardLayoutManager : MonoBehaviour
@@ -7,23 +6,16 @@ public class CardLayoutManager : MonoBehaviour
     public GameObject cardPrefab;
     public Transform gridParent;
 
-    public int columns = 3;
-    public int rows = 3;
+    private List<Sprite> randomizedSprites;
 
-    public Sprite[] availableSprites;
-
-    private List<Sprite> selectedSprites;
-    private List<Sprite> randomizedSprites; 
-
-
-    void Start()
+    // Called to set up the current level
+    public void SetUpLevel(LevelData levelData)
     {
-        GenerateCards();
-    }
+        // Update rows, columns, and available sprites based on the LevelData
+        int columns = levelData.columns;
+        int rows = levelData.rows;
+        Sprite[] availableSprites = levelData.levelImages;
 
-    // Generates cards based on rows and columns
-    void GenerateCards()
-    {
         int totalCards = columns * rows;
 
         // Ensure there is an even number of cards for matching pairs
@@ -33,25 +25,20 @@ public class CardLayoutManager : MonoBehaviour
             return;
         }
 
-        // Step 1: Select half the total number of sprites for pairs
-        selectedSprites = new List<Sprite>();
-
-        for (int i = 0; i < totalCards / 2; i++)
+        // Clear any existing cards in the grid
+        foreach (Transform child in gridParent)
         {
-            if (i < availableSprites.Length)
-            {
-                selectedSprites.Add(availableSprites[i]);
-            }
+            Destroy(child.gameObject);
         }
 
-        // Step 2: Duplicate the selected sprites to create pairs
-        randomizedSprites = new List<Sprite>(selectedSprites);
-        randomizedSprites.AddRange(selectedSprites); // Add a second set of the same sprites
+        // Step 1: Duplicate the available sprites from LevelData to create pairs
+        randomizedSprites = new List<Sprite>(availableSprites);
+        randomizedSprites.AddRange(availableSprites); // Create pairs by duplicating the sprites
 
-        
+        // Step 2: Shuffle the randomized sprite list
         Shuffle(randomizedSprites);
 
-        // Step 4: Instantiate cards and assign the randomized sprites
+        // Step 3: Instantiate cards and assign the randomized sprites
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < columns; j++)

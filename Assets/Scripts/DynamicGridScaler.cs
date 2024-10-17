@@ -4,19 +4,14 @@ using UnityEngine.UI;
 public class DynamicGridScaler : MonoBehaviour
 {
     public GridLayoutGroup gridLayoutGroup;
-    public int columns = 2;
-    public int rows = 2;
     public float maxCardSize = 100f;
     public float desiredSpacing = 10f;
     public float paddingPercentage = 0.05f;
 
-    void Start()
-    {
-        AdjustGridLayout();
-    }
 
-    void AdjustGridLayout()
+    public void AdjustGridLayout(int columns, int rows)
     {
+        
         RectTransform gridRectTransform = GetComponent<RectTransform>();
         float screenWidth = gridRectTransform.rect.width;
         float screenHeight = gridRectTransform.rect.height;
