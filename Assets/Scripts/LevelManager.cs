@@ -8,6 +8,7 @@ public class LevelManager : MonoBehaviour
     public CardLayoutManager cardLayoutManager;
     public DynamicGridScaler gridScaler;
     public GameManager gameManager;
+    public bool allLevelsCompleted = false;
 
     private const string CurrentLevelKey = "CurrentLevelIndex"; // Key for saving the level index
 
@@ -39,6 +40,7 @@ public class LevelManager : MonoBehaviour
             StartCoroutine(gameManager.AllLevelComplet());
             Debug.Log("All levels completed!");
         }
+        allLevelsCompleted = (currentLevelIndex == levels.Length - 1);
     }
 
     // Restart the game 

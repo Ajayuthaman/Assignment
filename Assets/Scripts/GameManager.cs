@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     public TMP_Text matchedCardNo;
     public TMP_Text totalAttemptsNo;
     public TMP_Text scoreTxt;
+    public TMP_Text titleTxt;
 
     private int totalAttempts;
     private int matchedCardsCount = 0;
@@ -197,6 +198,7 @@ public class GameManager : MonoBehaviour
     {
         totalAttempts = 0;
         matchedCardsCount = 0;
+        scoreNo = 0;
 
         levelManager.RestartGame();
         gamePanel.SetActive(true);
@@ -271,7 +273,21 @@ public class GameManager : MonoBehaviour
         ResetButtons();
         nextLevelPanel.SetActive(true);
 
-        buttons[1].gameObject.SetActive(isWin);
+        buttons[1].gameObject.SetActive(isWin && !levelManager.allLevelsCompleted);
+
+        if(isWin && !levelManager.allLevelsCompleted)
+        {
+            titleTxt.text = "WIN";
+        }
+        else if (levelManager.allLevelsCompleted)
+        {
+            titleTxt.text = "Levels Completed";
+        }
+        else
+        {
+            titleTxt.text = "Failed";
+        }
+
 
         for (int i = 0; i < buttons.Length; i++)
         {
@@ -289,6 +305,17 @@ public class GameManager : MonoBehaviour
                           .SetLoops(2, LoopType.Yoyo);
                 });
         }
+
+        // Animate the TMP_Text object
+        float textDelay = buttons.Length * 0.2f; // Delay the text animation after the last button
+
+        // Ensure the text starts fully transparent
+        titleTxt.alpha = 0f;
+
+        // Fade in the TMP_Text object
+        titleTxt.DOFade(1f, 0.5f)
+            .SetEase(Ease.Linear)
+            .SetDelay(textDelay);
     }
 
     void ResetButtons()

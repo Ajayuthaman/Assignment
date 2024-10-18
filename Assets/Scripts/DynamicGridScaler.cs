@@ -52,9 +52,9 @@ public class DynamicGridScaler : MonoBehaviour
         // Force the layout to update
         LayoutRebuilder.ForceRebuildLayoutImmediate(gridRectTransform);
 
-        Debug.Log($"Desired Columns: {columns}, Rows: {rows}");
+/*        Debug.Log($"Desired Columns: {columns}, Rows: {rows}");
         Debug.Log($"Available Width: {availableWidth}, Height: {availableHeight}");
         Debug.Log($"Card Size: {cardSize}");
-        Debug.Log($"Spacing X: {gridLayoutGroup.spacing.x}, Spacing Y: {gridLayoutGroup.spacing.y}");
+        Debug.Log($"Spacing X: {gridLayoutGroup.spacing.x}, Spacing Y: {gridLayoutGroup.spacing.y}");*/
     }
 }
