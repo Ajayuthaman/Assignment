@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
@@ -13,6 +14,10 @@ public class AudioManager : MonoBehaviour
 
     public AudioSource musicSource;
     public AudioSource soundEffectSource;
+
+    //mute sprites
+    public Image muteImg;
+    public Sprite[] muteIcons;
 
     private bool isMuted = false;  // Flag to check if the audio is muted
 
@@ -98,11 +103,13 @@ public class AudioManager : MonoBehaviour
         {
             musicSource.mute = true;
             soundEffectSource.mute = true;
+            muteImg.sprite = muteIcons[0];
         }
         else
         {
             musicSource.mute = false;
             soundEffectSource.mute = false;
+            muteImg.sprite = muteIcons[1];
         }
     }
 }

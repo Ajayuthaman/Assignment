@@ -26,7 +26,9 @@ public class GameManager : MonoBehaviour
     public TMP_Text totalAttemptsNo;
     public TMP_Text scoreTxt;
     public TMP_Text titleTxt;
+    public TMP_Text highScoreTxt;
 
+    private int highScore = 0;
     private int totalAttempts;
     private int matchedCardsCount = 0;
     private int scoreNo = 0;
@@ -57,7 +59,11 @@ public class GameManager : MonoBehaviour
         {
             initialPositions[i] = buttons[i].localPosition;
         }
+
+        highScore = PlayerPrefs.GetInt("HighScore", 0);
+        UpdateHighScoreUI();
     }
+
 
     public void OnCardFlipped(CardController flippedCard)
     {
@@ -121,11 +127,20 @@ public class GameManager : MonoBehaviour
             {
                 AudioManager.instance.PlayWinSound();
                 winParticle.Play();
-                //LoadNextLevel();
                 isWin = true;
-                Invoke(nameof(AnimateButtons), 3f);
                 combo = 0;
+
+                // Check and update high score
+                if (scoreNo > highScore)
+                {
+                    highScore = scoreNo;
+                    PlayerPrefs.SetInt("HighScore", highScore); // Save high score
+                    UpdateHighScoreUI();
+                }
+
+                Invoke(nameof(AnimateButtons), 3f);
             }
+
         }
         else
         {
@@ -279,7 +294,7 @@ public class GameManager : MonoBehaviour
         {
             titleTxt.text = "WIN";
         }
-        else if (levelManager.allLevelsCompleted)
+        else if (levelManager.allLevelsCompleted && isWin)
         {
             titleTxt.text = "Levels Completed";
         }
@@ -334,4 +349,15 @@ public class GameManager : MonoBehaviour
         nextLevelPanel.SetActive(false);
         menuPanel.SetActive(true);
     }
+
+    private void UpdateHighScoreUI()
+    {
+        highScoreTxt.text = highScore.ToString();
+    }
+
+    private void OnApplicationQuit()
+    {
+        PlayerPrefs.Save();
+    }
+
 }
